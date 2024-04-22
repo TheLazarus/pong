@@ -54,7 +54,7 @@ int main()
     Paddle paddle1{.x{50.0f}, .y{GetScreenHeight() / 2.0f - 50.0f}, .speed{400}, .width{10}, .height{100}};
     Paddle paddle2{.x{GetScreenWidth() - 50 - 10}, .y{GetScreenHeight() / 2 - 50}, .speed{400}, .width{10}, .height{100}};
 
-      // Game Loop
+    // Game Loop
     while (!WindowShouldClose())
     {
 
@@ -91,6 +91,18 @@ int main()
         {
 
             ball.speedX *= -1;
+        }
+
+        // Game Over Logic
+
+        if (ball.x < paddle1.x)
+        {
+            std::cout << "Game Over For Player 1";
+        }
+
+        if (ball.x > paddle2.x + paddle2.width)
+        {
+            std::cout << "Game Over For Player 2";
         }
 
         // Rendering
