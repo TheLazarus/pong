@@ -30,8 +30,8 @@ struct Player
 
 void initializeWindow()
 {
-
     ClearBackground(BLACK);
+    DrawText("Welcome to Pong!", 50, 50, 30, RED);
     DrawFPS(10, 10);
 }
 
@@ -54,17 +54,33 @@ int main()
     Paddle paddle1{.x{50.0f}, .y{GetScreenHeight() / 2.0f - 50.0f}, .speed{400}, .width{10}, .height{100}};
     Paddle paddle2{.x{GetScreenWidth() - 50 - 10}, .y{GetScreenHeight() / 2 - 50}, .speed{400}, .width{10}, .height{100}};
 
-    // Initializing the players
-    Player player1{};
-    Player player2{};
-
-    // Game Loop
+      // Game Loop
     while (!WindowShouldClose())
     {
 
-        // Ball Movement and Boundary Collision Logic
+        // Ball and Paddle Movement Logic
         ball.x += ball.speedX * GetFrameTime();
         ball.y += ball.speedY * GetFrameTime();
+
+        if (IsKeyDown(KEY_D) && paddle1.y > 0)
+        {
+            paddle1.y -= paddle1.speed * GetFrameTime();
+        }
+        if (IsKeyDown(KEY_F) && (paddle1.y + paddle1.height) < GetScreenHeight())
+        {
+            paddle1.y += paddle1.speed * GetFrameTime();
+        }
+
+        if (IsKeyDown(KEY_J) && paddle2.y > 0)
+        {
+            paddle2.y -= paddle2.speed * GetFrameTime();
+        }
+        if (IsKeyDown(KEY_K) && (paddle2.y + paddle2.height) < GetScreenHeight())
+        {
+            paddle2.y += paddle2.speed * GetFrameTime();
+        }
+
+        // Ball and Paddle Collision Logic
 
         if (ball.y < 0 || ball.y >= GetScreenHeight())
         {
@@ -75,25 +91,6 @@ int main()
         {
 
             ball.speedX *= -1;
-        }
-
-        // Paddle Movement Logic
-        if (IsKeyDown(KEY_D))
-        {
-            paddle1.y -= paddle1.speed * GetFrameTime();
-        }
-        if (IsKeyDown(KEY_F))
-        {
-            paddle1.y += paddle1.speed * GetFrameTime();
-        }
-
-        if (IsKeyDown(KEY_J))
-        {
-            paddle2.y -= paddle2.speed * GetFrameTime();
-        }
-        if (IsKeyDown(KEY_K))
-        {
-            paddle2.y += paddle2.speed * GetFrameTime();
         }
 
         // Rendering
