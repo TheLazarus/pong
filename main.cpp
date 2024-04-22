@@ -3,9 +3,9 @@
 
 struct Ball
 {
-    float x{}, y{};
-    float speedX{}, speedY{};
-    float radius{};
+    float x, y;
+    float speedX, speedY;
+    float radius;
 
     void draw()
     {
