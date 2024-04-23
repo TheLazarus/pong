@@ -98,24 +98,26 @@ int main()
         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle1.GetRect()) && ball.speedX < 0)
         {
             ball.speedX *= -1.1f;
+            ball.speedY = (ball.y - paddle1.y) / (paddle1.height / 2) * ball.speedX;
         }
 
         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle2.GetRect()) && ball.speedX > 0)
         {
             ball.speedX *= -1.1f;
+            ball.speedY = (ball.y - paddle2.y) / (paddle2.height / 2) * ball.speedX;
         }
 
         // Boundary Collisions
 
-        if (ball.y < 0 || ball.y >= GetScreenHeight())
+        if (ball.y < 0)
         {
+            ball.y = 0;
             ball.speedY *= -1;
         }
-
-        if (ball.x < 0 || ball.x > GetScreenWidth())
+        if (ball.y > GetScreenHeight())
         {
-
-            ball.speedX *= -1;
+            ball.y = GetScreenHeight();
+            ball.speedY *= -1;
         }
 
         // Rendering
