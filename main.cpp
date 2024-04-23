@@ -55,20 +55,22 @@ int main()
     Paddle paddle1{.x{50.0f}, .y{GetScreenHeight() / 2.0f}, .speed{400}, .width{10}, .height{100}};
     Paddle paddle2{.x{GetScreenWidth() - 50.0f}, .y{GetScreenHeight() / 2}, .speed{400}, .width{10}, .height{100}};
 
+    const char *winnerText = nullptr;
+
     // Game Loop
     while (!WindowShouldClose())
     {
 
         // Game Over Logic
 
-        if (ball.x < paddle1.x)
+        if (ball.x < 0)
         {
-            std::cout << "Game Over For Player 1";
+            winnerText = "Right Player Wins";
         }
 
-        if (ball.x > paddle2.x + paddle2.width)
+        if (ball.x > GetScreenWidth())
         {
-            std::cout << "Game Over For Player 2";
+            winnerText = "Left Player Wins";
         }
 
         // Ball Movement Logic
@@ -104,7 +106,7 @@ int main()
         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle2.GetRect()) && ball.speedX > 0)
         {
             ball.speedX *= -1.1f;
-            ball.speedY = (ball.y - paddle2.y) / (paddle2.height / 2) * ball.speedX;
+            ball.speedY = (ball.y - paddle2.y) / (paddle2.height / 2) * -ball.speedX;
         }
 
         // Boundary Collisions
@@ -120,10 +122,25 @@ int main()
             ball.speedY *= -1;
         }
 
+        // Restart Logic
+
+        if (IsKeyPressed(KEY_SPACE) && winnerText)
+        {
+            winnerText = nullptr;
+            ball.x = GetScreenWidth() / 2;
+            ball.y = GetScreenHeight() / 2;
+            ball.speedX = 300.0f;
+            ball.speedY = 300.0f;
+        }
+
         // Rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText("Welcome to Pong!", 50, 50, 30, RED);
+        if (winnerText)
+        {
+            int width = MeasureText(winnerText, 60);
+            DrawText(winnerText, GetScreenWidth() / 2 - width / 2, GetScreenHeight() / 2, 60, GREEN);
+        }
         DrawFPS(10, 10);
 
         paddle1.draw();
