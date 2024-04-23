@@ -19,7 +19,7 @@ struct Paddle
 
     void draw()
     {
-        DrawRectangle(x, y, width, height, RED);
+        DrawRectangle(x - width / 2, y - height / 2, width, height, RED);
     }
 };
 
@@ -27,13 +27,6 @@ struct Player
 {
     int points;
 };
-
-void initializeWindow()
-{
-    ClearBackground(BLACK);
-    DrawText("Welcome to Pong!", 50, 50, 30, RED);
-    DrawFPS(10, 10);
-}
 
 int main()
 {
@@ -43,16 +36,18 @@ int main()
     SetWindowState(FLAG_VSYNC_HINT);
 
     // Initializing the ball state
-    Ball ball{};
-    ball.x = GetScreenWidth() / 2.0f;
-    ball.y = GetScreenHeight() / 2.0f;
-    ball.radius = 5;
-    ball.speedX = 200.0f;
-    ball.speedY = 200.0f;
+ 
+    Ball ball{
+        .x{GetScreenWidth() / 2.0f},
+        .y{GetScreenHeight() / 2.0f},
+        .speedX{200.0f},
+        .speedY{200.0f},
+        .radius{5},
+    };
 
     // Initializing the paddles
-    Paddle paddle1{.x{50.0f}, .y{GetScreenHeight() / 2.0f - 50.0f}, .speed{400}, .width{10}, .height{100}};
-    Paddle paddle2{.x{GetScreenWidth() - 50 - 10}, .y{GetScreenHeight() / 2 - 50}, .speed{400}, .width{10}, .height{100}};
+    Paddle paddle1{.x{50.0f}, .y{GetScreenHeight() / 2.0f}, .speed{400}, .width{10}, .height{100}};
+    Paddle paddle2{.x{GetScreenWidth() - 50.0f}, .y{GetScreenHeight() / 2}, .speed{400}, .width{10}, .height{100}};
 
     // Game Loop
     while (!WindowShouldClose())
@@ -108,7 +103,10 @@ int main()
         // Rendering
         // Game updates should be made before the BeginDrawing() call
         BeginDrawing();
-        initializeWindow();
+        ClearBackground(BLACK);
+        DrawText("Welcome to Pong!", 50, 50, 30, RED);
+        DrawFPS(10, 10);
+
         paddle1.draw();
         paddle2.draw();
         ball.draw();
