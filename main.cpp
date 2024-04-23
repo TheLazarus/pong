@@ -25,7 +25,7 @@ struct Paddle
 
     void draw()
     {
-        DrawRectangleRec(GetRect(), RED);
+        DrawRectangleRec(GetRect(), WHITE);
     }
 };
 
@@ -95,14 +95,14 @@ int main()
         }
 
         // Paddle and Ball Collision Logic
-        if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle2.GetRect()))
+        if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle1.GetRect()) && ball.speedX < 0)
         {
-            ball.speedX *= -1;
+            ball.speedX *= -1.1f;
         }
 
-         if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle1.GetRect()))
+        if (CheckCollisionCircleRec(Vector2{ball.x, ball.y}, ball.radius, paddle2.GetRect()) && ball.speedX > 0)
         {
-            ball.speedX *= -1;
+            ball.speedX *= -1.1f;
         }
 
         // Boundary Collisions
